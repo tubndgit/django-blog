@@ -22,11 +22,11 @@ pip install -r requirments.txt
 
 Rename `mysite/settings.bak.py` to `mysite/settings.py`
 
-`
+```
 from django.core.management.utils import get_random_secret_key
 
 print(get_random_secret_key())
-`
+```
 
 Copy this key and add to `mysite/settings.py`
 
@@ -36,10 +36,10 @@ SECRET_KEY = ''
 
 ### Migrate database
 
-`
+```
 python manage.py makemigrations
 python manage.py migrate
-`
+```
 
 ### Creating A Super User
 
