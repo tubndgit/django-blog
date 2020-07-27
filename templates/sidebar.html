@@ -1,0 +1,73 @@
+{% load static %}
+{% block sidebar %}
+
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 float-right ">
+    <!-- About block -->
+    <div class="card my-4">
+        <h5 class="card-header">About Us</h5>
+        <div class="card-body">
+            <p class="card-text"> 
+            <span>We're the Top Rated freelancers for web scrap</span><span style="font-family: Arial;">﻿</span><span style="font-family: Arial;">﻿</span><span style="font-family: Arial;">﻿</span><span style="color: rgb(34, 34, 34); font-family: Arial; font-size: 18px; white-space: pre-line;">ing / crawling / automated data extraction solutions on </span><a href="https://www.upwork.com/freelancers/~01965af7b453681c94" target="_blank"><span style="font-size: 18px; font-family: Arial;">Upwork</span></a><span style="color: rgb(34, 34, 34); font-family: Arial; font-size: 18px; white-space: pre-line;">. We're doing web scraping jobs as main work and completed over 1,000 jobs and served hundreds of clients...</span>
+            </p>
+            <a href="/page/about-us" class="btn btn-danger">Know more!</a>
+        </div>
+    </div>
+
+    <!-- Categories block -->
+    <div class="card my-4">
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+            <p class="card-text"> 
+                <ul class="list-group">
+                    {% for cat in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'category_list' cat.slug  %}">{{ cat.name }}</a>
+                        <span class="badge badge-primary badge-pill">{{ cat.posts_count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </p>
+            
+        </div>
+    </div>
+
+    <!-- Demo block -->
+    <div class="card my-4">
+        <h5 class="card-header">LIVE DEMO</h5>
+        <div class="card-body">
+            <p class="card-text"> 
+                <ul class="list-group">                    
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'redoc'%}" target="_blank">Blog API - Django Rest Framework</a>
+                        <!--span class="badge badge-primary badge-pill"></span-->
+                    </li>                    
+                </ul>
+            </p>
+            
+        </div>
+    </div>
+
+    <!-- Ads block -->
+    <div class="card my-4">
+        <!--h5 class="card-header">About Us</h5-->
+        <div class="card-body ads">            
+            <!-- 300x250 -->
+            <a href="https://luminati.io/?affiliate=ref_5c7c6f828fcb5320de302843" target="_blank" style="outline:none;border:none;">
+                <img src="{% static 'images/lum_ad_300x250.png' %}" alt="luminati" border="0"/>
+            </a>    
+        
+        
+        </div>
+        <div class="card-body ads">            
+            <!-- 300x250 -->
+            <a href="https://www.scraperapi.com/?fp_ref=henry56" target="_blank" style="outline:none;border:none;">
+                <img src="https://d2gdx5nv84sdx2.cloudfront.net/uploads/ssvxh57a/marketing_asset/banner/2669/069-ScraperAPI-GIF-300x250-v1.gif" alt="scraperapi" border="0"/>
+            </a>    
+        
+        
+        </div>
+    </div>
+</div>
+
+{% endblock sidebar %}

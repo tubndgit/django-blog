@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} Web Scraping | {{ page.title }} {% endblock title %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+  <div class="row">
+    <!-- Blog Entries Column -->
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">        
+        <h1>{{ page.title }}</h1>  
+        <p class="card-text ">{{ page.content | safe }}</p>
+      </div>
+    </div>
+    {% block sidebar %}
+    {% include 'sidebar.html' %}
+    {% endblock sidebar %}
+  </div>
+</div>
+
+
+
+{%endblock%}

@@ -1,0 +1,916 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /api/post/:
+    get:
+      operationId: listPosts
+      description: Return a list of all the existing posts.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                  previous:
+                    type: string
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        title:
+                          type: string
+                          maxLength: 200
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        author:
+                          type: integer
+                        short_desc:
+                          type: string
+                        content:
+                          type: string
+                        meta_description:
+                          type: string
+                        meta_keywords:
+                          type: string
+                        cover:
+                          type: string
+                          format: binary
+                          nullable: true
+                        category:
+                          properties:
+                            id:
+                              type: integer
+                              readOnly: true
+                            name:
+                              type: string
+                              maxLength: 80
+                            slug:
+                              type: string
+                              maxLength: 200
+                              pattern: ^[-a-zA-Z0-9_]+$
+                            created_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            updated_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            status:
+                              enum:
+                              - 0
+                              - 1
+                          required:
+                          - name
+                          - slug
+                          type: object
+                          readOnly: true
+                        tag:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                readOnly: true
+                              name:
+                                type: string
+                                maxLength: 80
+                              slug:
+                                type: string
+                                maxLength: 200
+                                pattern: ^[-a-zA-Z0-9_]+$
+                              created_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                              updated_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                            required:
+                            - name
+                            - slug
+                          readOnly: true
+                        status:
+                          enum:
+                          - 0
+                          - 1
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - title
+                      - slug
+                      - author
+          description: ''
+    post:
+      operationId: CreatePost
+      description: Create a new post instance.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: &id001
+              properties:
+                title:
+                  type: string
+                  maxLength: 200
+                slug:
+                  type: string
+                  maxLength: 200
+                  pattern: ^[-a-zA-Z0-9_]+$
+                author:
+                  type: integer
+                short_desc:
+                  type: string
+                content:
+                  type: string
+                meta_description:
+                  type: string
+                meta_keywords:
+                  type: string
+                cover:
+                  type: string
+                  format: binary
+                  nullable: true
+                status:
+                  enum:
+                  - 0
+                  - 1
+              required:
+              - title
+              - slug
+              - author
+          application/x-www-form-urlencoded:
+            schema: *id001
+          multipart/form-data:
+            schema: *id001
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  title:
+                    type: string
+                    maxLength: 200
+                  slug:
+                    type: string
+                    maxLength: 200
+                    pattern: ^[-a-zA-Z0-9_]+$
+                  author:
+                    type: integer
+                  short_desc:
+                    type: string
+                  content:
+                    type: string
+                  meta_description:
+                    type: string
+                  meta_keywords:
+                    type: string
+                  cover:
+                    type: string
+                    format: binary
+                    nullable: true
+                  category:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      name:
+                        type: string
+                        maxLength: 80
+                      slug:
+                        type: string
+                        maxLength: 200
+                        pattern: ^[-a-zA-Z0-9_]+$
+                      created_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      updated_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      status:
+                        enum:
+                        - 0
+                        - 1
+                    required:
+                    - name
+                    - slug
+                    type: object
+                    readOnly: true
+                  tag:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        name:
+                          type: string
+                          maxLength: 80
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - name
+                      - slug
+                    readOnly: true
+                  status:
+                    enum:
+                    - 0
+                    - 1
+                  created_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  updated_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                required:
+                - title
+                - slug
+                - author
+          description: ''
+  /api/post/{post_id}:
+    get:
+      operationId: RetrievePost
+      description: Get the given post id.
+      parameters:
+      - name: post_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  title:
+                    type: string
+                    maxLength: 200
+                  slug:
+                    type: string
+                    maxLength: 200
+                    pattern: ^[-a-zA-Z0-9_]+$
+                  author:
+                    type: integer
+                  short_desc:
+                    type: string
+                  content:
+                    type: string
+                  meta_description:
+                    type: string
+                  meta_keywords:
+                    type: string
+                  cover:
+                    type: string
+                    format: binary
+                    nullable: true
+                  category:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      name:
+                        type: string
+                        maxLength: 80
+                      slug:
+                        type: string
+                        maxLength: 200
+                        pattern: ^[-a-zA-Z0-9_]+$
+                      created_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      updated_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      status:
+                        enum:
+                        - 0
+                        - 1
+                    required:
+                    - name
+                    - slug
+                    type: object
+                    readOnly: true
+                  tag:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        name:
+                          type: string
+                          maxLength: 80
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - name
+                      - slug
+                    readOnly: true
+                  status:
+                    enum:
+                    - 0
+                    - 1
+                  created_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  updated_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                required:
+                - title
+                - slug
+                - author
+          description: ''
+    put:
+      operationId: UpdatePost
+      description: Update an existing post.
+      parameters:
+      - name: post_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id002
+              properties:
+                title:
+                  type: string
+                  maxLength: 200
+                slug:
+                  type: string
+                  maxLength: 200
+                  pattern: ^[-a-zA-Z0-9_]+$
+                author:
+                  type: integer
+                short_desc:
+                  type: string
+                content:
+                  type: string
+                meta_description:
+                  type: string
+                meta_keywords:
+                  type: string
+                cover:
+                  type: string
+                  format: binary
+                  nullable: true
+                status:
+                  enum:
+                  - 0
+                  - 1
+              required:
+              - title
+              - slug
+              - author
+          application/x-www-form-urlencoded:
+            schema: *id002
+          multipart/form-data:
+            schema: *id002
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  title:
+                    type: string
+                    maxLength: 200
+                  slug:
+                    type: string
+                    maxLength: 200
+                    pattern: ^[-a-zA-Z0-9_]+$
+                  author:
+                    type: integer
+                  short_desc:
+                    type: string
+                  content:
+                    type: string
+                  meta_description:
+                    type: string
+                  meta_keywords:
+                    type: string
+                  cover:
+                    type: string
+                    format: binary
+                    nullable: true
+                  category:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      name:
+                        type: string
+                        maxLength: 80
+                      slug:
+                        type: string
+                        maxLength: 200
+                        pattern: ^[-a-zA-Z0-9_]+$
+                      created_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      updated_on:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      status:
+                        enum:
+                        - 0
+                        - 1
+                    required:
+                    - name
+                    - slug
+                    type: object
+                    readOnly: true
+                  tag:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        name:
+                          type: string
+                          maxLength: 80
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - name
+                      - slug
+                    readOnly: true
+                  status:
+                    enum:
+                    - 0
+                    - 1
+                  created_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  updated_on:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                required:
+                - title
+                - slug
+                - author
+          description: ''
+    delete:
+      operationId: DestroyPost
+      description: Delete a post instance.
+      parameters:
+      - name: post_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+  /api/post/cat/{cat_id}:
+    get:
+      operationId: listPostByCatgorys
+      description: Get Posts by Category Id.
+      parameters:
+      - name: cat_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                  previous:
+                    type: string
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        title:
+                          type: string
+                          maxLength: 200
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        author:
+                          type: integer
+                        short_desc:
+                          type: string
+                        content:
+                          type: string
+                        meta_description:
+                          type: string
+                        meta_keywords:
+                          type: string
+                        cover:
+                          type: string
+                          format: binary
+                          nullable: true
+                        category:
+                          properties:
+                            id:
+                              type: integer
+                              readOnly: true
+                            name:
+                              type: string
+                              maxLength: 80
+                            slug:
+                              type: string
+                              maxLength: 200
+                              pattern: ^[-a-zA-Z0-9_]+$
+                            created_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            updated_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            status:
+                              enum:
+                              - 0
+                              - 1
+                          required:
+                          - name
+                          - slug
+                          type: object
+                          readOnly: true
+                        tag:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                readOnly: true
+                              name:
+                                type: string
+                                maxLength: 80
+                              slug:
+                                type: string
+                                maxLength: 200
+                                pattern: ^[-a-zA-Z0-9_]+$
+                              created_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                              updated_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                            required:
+                            - name
+                            - slug
+                          readOnly: true
+                        status:
+                          enum:
+                          - 0
+                          - 1
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - title
+                      - slug
+                      - author
+          description: ''
+  /api/post/tag/{tag_id}:
+    get:
+      operationId: listPostByTags
+      description: Get Posts by Tag Id.
+      parameters:
+      - name: tag_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                  previous:
+                    type: string
+                    nullable: true
+                  results:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        title:
+                          type: string
+                          maxLength: 200
+                        slug:
+                          type: string
+                          maxLength: 200
+                          pattern: ^[-a-zA-Z0-9_]+$
+                        author:
+                          type: integer
+                        short_desc:
+                          type: string
+                        content:
+                          type: string
+                        meta_description:
+                          type: string
+                        meta_keywords:
+                          type: string
+                        cover:
+                          type: string
+                          format: binary
+                          nullable: true
+                        category:
+                          properties:
+                            id:
+                              type: integer
+                              readOnly: true
+                            name:
+                              type: string
+                              maxLength: 80
+                            slug:
+                              type: string
+                              maxLength: 200
+                              pattern: ^[-a-zA-Z0-9_]+$
+                            created_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            updated_on:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            status:
+                              enum:
+                              - 0
+                              - 1
+                          required:
+                          - name
+                          - slug
+                          type: object
+                          readOnly: true
+                        tag:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: integer
+                                readOnly: true
+                              name:
+                                type: string
+                                maxLength: 80
+                              slug:
+                                type: string
+                                maxLength: 200
+                                pattern: ^[-a-zA-Z0-9_]+$
+                              created_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                              updated_on:
+                                type: string
+                                format: date-time
+                                readOnly: true
+                            required:
+                            - name
+                            - slug
+                          readOnly: true
+                        status:
+                          enum:
+                          - 0
+                          - 1
+                        created_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                        updated_on:
+                          type: string
+                          format: date-time
+                          readOnly: true
+                      required:
+                      - title
+                      - slug
+                      - author
+          description: ''
+  /api/categories/:
+    get:
+      operationId: listCategoryCounts
+      description: Get Categories.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      readOnly: true
+                    name:
+                      type: string
+                      maxLength: 80
+                    slug:
+                      type: string
+                      maxLength: 200
+                      pattern: ^[-a-zA-Z0-9_]+$
+                    posts_count:
+                      type: integer
+                  required:
+                  - name
+                  - slug
+                  - posts_count
+          description: ''
+  /api/token/:
+    post:
+      operationId: CreateTokenObtainPair
+      description: 'Takes a set of user credentials and returns an access and refresh
+        JSON web
+
+        token pair to prove the authentication of those credentials.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: &id003
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  writeOnly: true
+              required:
+              - username
+              - password
+          application/x-www-form-urlencoded:
+            schema: *id003
+          multipart/form-data:
+            schema: *id003
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  username:
+                    type: string
+                required:
+                - username
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: CreateTokenRefresh
+      description: 'Takes a refresh type JSON web token and returns an access type
+        JSON web
+
+        token if the refresh token is valid.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: &id004
+              properties:
+                refresh:
+                  type: string
+              required:
+              - refresh
+          application/x-www-form-urlencoded:
+            schema: *id004
+          multipart/form-data:
+            schema: *id004
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  refresh:
+                    type: string
+                required:
+                - refresh
+          description: ''

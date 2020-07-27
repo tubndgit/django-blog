@@ -1,0 +1,109 @@
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 17px;
+    background-color: #fdfdfd;
+}
+
+.shadow {
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #f00000;
+    border-color: #dc281e;
+}
+
+.masthead {
+    background: #3398E1;
+    height: auto;
+    padding-bottom: 15px;
+    box-shadow: 0 16px 48px #E3E7EB;
+    padding-top: 10px;
+}
+
+.card {
+    box-shadow: 0 16px 48px #E3E7EB;
+}
+
+.col-md-4 {
+    margin-top: 1rem!important;
+}
+
+.card.my-4 {
+    margin-top: 0rem!important;
+}
+
+.card-body.ads {
+    margin: auto;
+}
+
+.card-body.ads img {
+  width: 100%;
+  height: auto;
+}
+
+.view-more-arrow {
+    color: white;
+}
+
+#top-button {
+  display: inline-block;
+  /*background-color: #FF9800;*/
+  background-color: rgba(0,0,0,0.1);
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transition: background-color .3s, 
+    opacity .5s, visibility .5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  margin: 5px;
+}
+#top-button::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;
+  line-height: 50px;
+  color: #fff;
+  
+}
+#top-button:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+#top-button:active {
+  background-color: #555;
+}
+#top-button.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Styles for the content section */
+
+@media (min-width: 500px) {
+  #top-button {
+    /*margin: 30px;*/
+  }
+}
+
+.card-title a{
+    color: #000000;
+    text-decoration: none;
+}
+
+.card-body img {
+  max-width: 100%!important;
+}
+
+.card-body.summernote img {
+  max-width: 100%!important;
+}

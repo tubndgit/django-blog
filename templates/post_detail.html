@@ -1,0 +1,98 @@
+{% extends 'base.html' %} 
+{% block title %} Web Scraping | {{ post.title }} {% endblock title %}
+{% block meta %}
+  <meta name="description" content="{{post.meta_description}}"/>
+  <meta name="keywords" content="{% if post.meta_keywords %}{{post.meta_keywords}}, {% endif %}{{ post.tag.all|join:', ' }}"/>
+  <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.slug  %}"/>
+  <link rel="publisher" href="{{author}}"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="{{ post.title }}"/>
+  <meta property="og:description" content="{{ post.meta_description }}"/>
+
+  <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.slug  %}"/>
+  <meta property="og:site_name" content="{{site_name}}"/>  
+  <meta property="article:author" content="{{author}}"/>
+  {% for tg in post.tag.all %}    
+  <meta property="article:tag" content="{{ tg.name }}"/>
+  {% endfor %}
+  <meta property="article:section" content="{{ post.category.name }}"/>
+  <meta property="article:published_time" content="{{ post.created_on|date:'Y-m-d H:i:s' }}"/>
+  <meta property="article:modified_time" content="{{ post.updated_on|date:'Y-m-d H:i:s' }}"/>
+  <meta property="og:updated_time" content="{{ post.updated_on|date:'Y-m-d H:i:s' }}"/>  
+  <meta property="fb:admins" content="100732781643827" />
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{main_image}}"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:description" content="{{ post.meta_description }}"/>
+  <meta name="twitter:title" content="{{ post.title }}"/>
+  <meta name="twitter:site" content="@webscrapingnow"/>
+  <meta name="twitter:domain" content="WebScrapingNow"/>
+  <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{main_image}}"/>
+  <meta name="twitter:creator" content="@webscrapingnow"/>
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body summernote">
+        <h1>{{ post.title }}</h1>
+        <p class=" text-muted"><a href="{{author}}" target="_blank" class="">{{ post.author.first_name }} {{ post.author.last_name }}</a> | {{ post.created_on }} {% if post.category %}| Posted on <a href="{% url 'category_list' post.category.slug  %}" class="">{{ post.category.name }}</a>{% endif %}</p>        
+        <p class="card-text ">{{ post.content | safe }}</p>
+        <hr/>
+        <!--p class="card-text ">{{ post.view_count}} views</p-->
+        <p class="card-text ">
+          Tags:
+          {% for tg in post.tag.all %}
+            <a href="{% url 'tag_list' tg.slug  %}" class="">#{{ tg.name }}</a>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        <!-- comments -->
+        {% with comments.count as total_comments %}
+        <h5>{{ total_comments }} comments</h5>
+
+        <p>
+          {% endwith %} {% for comment in comments %}
+        </p>
+
+        <div class="comments" style="padding: 10px;">
+          <p class="font-weight-bold">
+            {{ comment.name }}
+            <span class=" text-muted font-weight-normal">
+              {{ comment.created_on }}
+            </span>
+          </p>
+          {{ comment.body | linebreaks }}
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        {% if new_comment %}
+        <div class="alert alert-success" role="alert">
+          Your comment is awaiting moderation
+        </div>
+        {% else %}
+        <h3>Leave a comment</h3>
+        <p>Your email address will not be published. Required fields are marked *</p>
+        <form method="post" style="margin-top: 1.3em;">
+          {{ comment_form | crispy }}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
